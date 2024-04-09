@@ -1,0 +1,89 @@
+﻿@model List<Employee>
+@{
+    int sn = 1;
+}
+<div style="height: 100vh; background-color: rgba(0, 0, 0, 0.7)" class="position-fixed w-100 d-none" id="blurBox">
+    <div class="position-relative d-flex h-100 w-100 justify-content-center align-items-center">
+        <div id="addDataFormBox" class="position-absolute d-none p-4 bg-white w-25 rounded">
+            <div class="d-flex justify-content-end">
+                <button id="closeAddPopUpBtn" class="btn btn-danger">
+                    Close
+                </button>
+            </div>
+            <form id="addEmployeeForm" class="w-100">
+                <input hidden name="EmployeeId" value="1" />
+                <label>Name</label>
+                <input type="text" name="Name" class="form-control mb-3" placeholder="Enter Employee name" />
+                <label>Email</label>
+                <input type="text" name="Email" class="form-control mb-3" placeholder="Enter Employee email" />
+                <label>Address</label>
+                <input type="text" name="Address" class="form-control mb-3" placeholder="Enter Employee Address " />
+                <label>Password</label>
+                <input type="text" name="Password" class="form-control mb-3" placeholder="Enter Password " />
+                <button id="addEmployee" class="btn btn-success mt-3 w-100">Add</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h1 class="text-center mb-3">Employee List</h1>
+    <div class="d-flex justify-content-end mb-4">
+        <button class="btn btn-success" id="showAddPopupBox">Add</button>
+    </div>
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>SN</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Mobile</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+
+                <tr>
+                    <td>@(sn++)</td>
+                    <td>@(employee.Name)</td>
+                    <td>@(employee.Email)</td>
+                    <td>@(employee.Address)</td>
+                    <td>@(employee.ContactNumber)</td>
+                    <td>
+                        @using (Html.BeginForm("deleteEmployee", "Admin", FormMethod.Post))
+                        {
+                            <input hidden name="employeeId" value="@(employee.Id)" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#closeAddPopUpBtn").on("click", () => {
+            $("#blurBox").addClass("d-none");
+            $("#addDataFormBox").addClass("d-none");
+        });
+        $("#showAddPopupBox").on("click", () => {
+            $("#blurBox").removeClass("d-none");
+            $("#addDataFormBox").removeClass("d-none");
+        });
+        $("#addEmployee").on("click", () => {
+            event.preventDefault();
+            const form = document.getElementById("addEmployeeForm");
+            const formAction = "@Url.Action("addEmployee", "Admin")";
+            form.action = formAction;
+            form.submit();
+        });
+    });
+
+
+</script>

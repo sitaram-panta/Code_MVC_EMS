@@ -1,0 +1,22 @@
+﻿@model List<IFormFile>
+
+@{
+    var message = ViewBag.Message as string;
+}
+
+<div class="container">
+    <div class="center-container">
+        @if (!string.IsNullOrEmpty(message))
+        {
+            <div class="alert alert-success">@message</div>
+        }
+
+        <form method="post" enctype="multipart/form-data" asp-controller="EmployeeMigration" asp-action="Index">
+            <div class="mb-3">
+                <label for="file" class="form-label">Choose an Excel file:</label>
+                <input type="file" class="form-control" id="file" name="MainFile" style="width: 40%">
+            </div>
+            <button type="submit" class="btn btn-success" style="width: 40%">Upload</button>
+        </form>
+    </div>
+</div>

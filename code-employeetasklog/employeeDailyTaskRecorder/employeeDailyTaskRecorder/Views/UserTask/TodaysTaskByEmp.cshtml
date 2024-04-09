@@ -1,0 +1,70 @@
+﻿@using employeeDailyTaskRecorder.StaticHelper;
+@model IEnumerable<employeeDailyTaskRecorder.Models.Employee>
+@{
+    int sn = 1;
+}
+<div class="container">
+    <div class="d-flex justify-content-between align-content-center w-100 mb-4">
+        <h2 class="text-center">Task List of @(ViewBag.uDate)</h2>
+        <form method="GET" class="d-flex" style="gap:10px;align-items:center;">
+            <input type="date" class="form-control date-picker" value="@(ViewBag.uDate)" name="uDate" />
+            <button type="submit" class="btn btn-success d-flex" style="align-items:center;">
+                <ion-icon name="document-outline" class="mr-2 fs-4"></ion-icon>
+                Report
+            </button>
+            <button type="button" id="sendEmailBtn" class="btn btn-primary d-flex" style="align-items:center;">
+                <ion-icon name="mail-outline" class="mr-2 fs-4"></ion-icon>
+                Send_Email
+            </button>
+        </form>
+    </div>
+    <div>
+        <table id="myTable" class="table mt-4 table-stripped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>SN</th>
+                    <th>Name</th>
+                    <th>Task</th>
+                    <th>Time</th>
+                    <th>IP-Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model)
+                {
+                    var rec = task.Records.First();
+                    <tr>
+                        <td>@(sn++)</td>
+                        <td><a asp-controller="User" asp-action="UserDetails" asp-route-id="@(rec.EmployeeId)" class="text-decoration-none" style="color:black;">@(task.Name)</a></td>
+                        <td>@Html.Raw(rec.Task)</td>
+                        <td>@(rec.TaskPerformedDate.ShowTime())</td>
+                        <td>@(rec.Ipaddress)</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#sendEmailBtn").click(function () {
+                $.ajax({
+                    url: "/Admin/SendEmail",
+                    type: "POST",
+                    success: function (response) {
+                        alert(response);
+                    },
+                    error: function (error) {
+                        alert("An error occurred: " + error.responseText);
+                    }
+                });
+            });
+            $('#myTable').DataTable();
+        });
+    </script>
+
+}

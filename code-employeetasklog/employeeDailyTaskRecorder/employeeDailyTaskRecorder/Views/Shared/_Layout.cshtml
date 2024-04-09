@@ -1,0 +1,254 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <title>Task Management</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Task Management</title>
+    @* <title>@ViewData["Title"] - employeeDailyTaskRecorder</title> *@
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/employeeDailyTaskRecorder.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
+    <link rel="icon" href="~/Img/logo.png" />
+</head>
+<body>
+    <div style="height: 100vh; background-color: rgba(0, 0, 0, 0.7);z-index:99" class="position-fixed w-100 d-none" id="blurBox">
+        <div class="position-relative d-flex h-100 w-100 justify-content-center align-items-center">
+            <div id="addDataFormBox" class="position-absolute d-none p-4 bg-white w-50 rounded">
+                <div class="d-flex justify-content-end">
+                    <button id="closeAddPopUpBtn" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-dark fw-bold fs-5">Today's Task</p>
+                <form id="addTaskForm" method="POST" class="w-100">
+                    <textarea class="form-control" id="summernote" name="Task" rows="3"></textarea>
+                    <p class="text-danger" id="emptyAddTaskInputFiled"></p>
+                    <div class="d-flex justify-content-end">
+                        <button id="addTodayTask" class="btn btn-success mt-3 w-25">Add</button>
+                    </div>
+                </form>
+            </div>
+            <div id="addUserDataFormBox" class="position-absolute d-none p-4 bg-white w-50 rounded">
+                <div class="d-flex justify-content-end">
+                    <button id="closeAddUserPopUpBtn" class="btn btn-danger mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                        </svg>
+                    </button>
+                </div>
+                <h3 class="fs-4 mb-3 text-secondary">Add Users</h3>
+                <hr />
+                <form id="addEmployeeForm" asp-controller="User" asp-action="addUser" method="POST" class="w-100">
+                    @if (TempData.ContainsKey("emailPresence"))
+                    {
+                        if (TempData["emailPresence"].ToString() == "True")
+                        {
+                            <div class="alert alert-danger" id="emailErrorMsg">
+                                Email is already taken
+                            </div>
+                        }
+                    }
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="Name">Name</label>
+                            <input type="text" name="Name" class="form-control" placeholder="Employee name" />
+                            <p id="Name-error" class="error" for="Name"></p>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="Email">Email</label>
+                            <input type="email" name="Email" class="form-control" placeholder="Employee email" />
+                            <p id="Email-error" class="error" for="Email"></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="ContactNumber">Contact Number</label>
+                            <input type="text" name="ContactNumber" class="form-control" placeholder="Employee number" />
+                            <p id="ContactNumber-error" class="error" for="ContactNumber"></p>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="Gender">Gender</label>
+                            <div class="d-flex mt-2" style="gap: 20px">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="Gender" id="male" value="1" />
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="Gender" id="female" value="2" />
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="Address">Address</label>
+                            <input type="text" name="Address" class="form-control" placeholder="Employee Address" />
+                            <p id="Address-error" class="error" for="Address"></p>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="EmpStage">Current Stage</label>
+                            <select name="EmpStage" class="form-control">
+                                <option selected value="">Select a Stage</option>
+                                <option value="1">Intern</option>
+                                <option value="2">Probation</option>
+                                <option value="3">Contractual</option>
+                            </select>
+                            <p id="EmpStage-error" class="error" for="EmpStage"></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="EmpType">Type</label>
+                            <select name="EmpType" class="form-control">
+                                <option selected value="">Select a Type</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Employee</option>
+                            </select>
+                            <p id="EmpType-error" class="error" for="EmpType"></p>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="EmpRole">Organization Role</label>
+                            <select name="EmpRole" class="form-control">
+                                <option selected value="">Select a Role</option>
+                                <option value="1">Customer Support/QA</option>
+                                <option value="2">Developer</option>
+                                <option value="3">Admin</option>
+                            </select>
+                            <p id="EmpRole-error" class="error" for="EmpRole"></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="JoinDate">Join Date</label>
+                            <input type="date" name="JoinDate" class="form-control" />
+                            <p id="Join-error" class="error" for="JoinDate"></p>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="CurrentStageCompletionDate">Completion Date</label>
+                            <input type="date" name="CurrentStageCompletionDate" class="form-control" />
+                            <p id="CurrentStageCompletionDate-error" class="error" for="CurrentStageCompletionDate"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="from-group col-md-6">
+                            <label>Allow Notification Reminder</label>
+                            <input name="HasEmailReminder" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No" data-onstyle="success" data-offstyle="danger">
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Password</label>
+                        <input type="password" name="Password" id="addDataPassword" class="form-control" placeholder="Password" />
+                        <p id="Password-error" class="error" for="Password"></p>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="showAddDataPasswordCheckBox">
+                        <label class="form-check-label" for="showAddDataPasswordCheckBox">Show Password</label>
+                    </div>
+                    <div class="d-flex justify-content-end">
+
+                        <button id="addEmployee" type="submit" class="btn btn-success mt-3 w-25">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggler" data-toggle="open-navbar1">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <a href="#">
+                    <h4>Task<span>Tally</span></h4>
+                </a>
+            </div>
+            <div class="navbar-menu" id="open-navbar1">
+                <ul class="navbar-nav">
+                    <li><a asp-area="" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
+                    <li class="navbar-dropdown">
+                        <a href="#" class="dropdown-toggler" data-dropdown="employee-dropdown">
+                            Employee <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown" id="employee-dropdown">
+                            <li><a asp-controller="User" asp-action="Index">Active Employees</a></li>
+                            <li class="separator"></li>
+                            <li><a asp-controller="User" asp-action="FormerEmployee">Former Employees</a></li>
+                        </ul>
+                    </li>
+                    <li class="navbar-dropdown">
+                        <a href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
+                            Task <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown" id="my-dropdown-id">
+                            <li><a asp-controller="UserTask" asp-action="Index">All Tasks</a></li>
+                            <li class="separator"></li>
+                            <li><a asp-controller="UserTask" asp-action="TodaysTaskByEmp">Today's Tasks</a></li>
+                        </ul>
+                    </li>
+                    <li class="navbar-dropdown">
+                        <a href="#" class="dropdown-toggler" data-dropdown="blog">
+                            Leave Request <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown" id="blog">
+                            <li><a asp-controller="LeaveRequest" asp-action="NewLeaveRequest">New Leave Request</a></li>
+                            <li class="separator"></li>
+                            <li><a asp-controller="LeaveRequest" asp-action="RequestHistory">Leave Request History</a></li>
+                            <li class="separator"></li>
+                            <li><a asp-controller="LeaveRequest" asp-action="LeaveRequestReport">Leave Request Report</a></li>
+                        </ul>
+                    </li>
+                    <li><a asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @RenderBody()
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+            integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" nomodule></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

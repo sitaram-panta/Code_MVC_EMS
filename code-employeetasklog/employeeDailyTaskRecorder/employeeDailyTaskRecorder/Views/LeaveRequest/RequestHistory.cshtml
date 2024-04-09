@@ -1,0 +1,45 @@
+﻿@model List<LeaveRequest>
+@{
+    int sn = 1;
+}
+<div class="container">
+    <h3 class="text-center">Leave Request History</h3>
+    <table id="myTable" class="table mt-4 table-stripped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>SN</th>
+                <th>Requested By</th>
+                <th>Requested Date</th>
+                <th>From Date</th>
+                <th>To Date</th>
+                <th>Leave Days</th>
+                <th>Remarks</th>
+                <th>IsApproved</th>
+                <th>Approved By</th>
+                <th>Approved Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@(sn++)</td>
+                    <td>@(item.Employee.Name)</td>
+                    <td>@(item.RequestDate.ShowDate())</td>
+                    <td>@(item.FromDate.ShowDate())</td>
+                    <td>@(item.ToDate.ShowDate())</td>
+                    <td>@((int)((item.ToDate - item.FromDate).Days) + 1)</td>
+                    <td>@(item.LeaveRemarks)</td>
+                    <td>@(item.IsApproved)</td>
+                    <td>@(item.ApprovedByUserName)</td>
+                    <td>@(item.ApprovedDate)</td>
+                </tr>
+            }
+        </tbody>
+    </table> 
+</div>
+@section Scripts{
+    <script>
+        $('#myTable').DataTable();
+    </script>
+}

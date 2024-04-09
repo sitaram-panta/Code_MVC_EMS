@@ -1,0 +1,171 @@
+﻿@model VMAdminIndex
+@{
+    Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+    DateTime currentDateTime = DateTime.Now;
+    string formattedDate = currentDateTime.ToString("MM/dd/yyyy");
+    int sn = 1;
+}
+<div id="addDataFormBox" style="z-index: 99; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);" class="position-absolute d-none p-4 bg-white w-50 rounded">
+            <div class="d-flex justify-content-end">
+                <button id="closeAddPopUpBtn" class="btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                    </svg>
+                </button>
+            </div>
+            <p class="text-secondary fs-5">Today's Task</p>
+            <form id="addTaskForm" method="post" class="w-100">
+                <textarea id="summernote" name="Task"></textarea>
+                <p class="text-danger" id="emptyAddTaskInputFiled"></p>
+                <div class="d-flex justify-content-end">
+                    <button id="addTodayTask" class="btn btn-success mt-3 w-25">Add Task</button>
+                </div>
+            </form>
+        </div>
+        @foreach (var data in Model.TaskList)
+        {
+    <div id="editTaskBox_@data.Id" style="z-index: 99; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);" class="position-absolute d-none p-4 bg-white w-50 rounded">
+                <div class="d-flex justify-content-end">
+                    <button id="editTaskBox_@data.Id" onclick="hideEditBox(this.id);" class="btn btn-danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-secondary fs-5">Update Today's Task</p>
+                @using (Html.BeginForm("editTask", "UserTask", FormMethod.Post))
+                {
+                    <input type="hidden" value="Employee" name="Type" />
+                    <input hidden name="Id" value=@(data.Id) />
+                    <label class="form-label">Task</label>
+                    <textarea class="form-control" id="summernoteedit_@data.Id" name="Task" rows="3">@Html.Raw(data.Task)</textarea>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-warning mt-3 w-25">Update</button>
+                    </div>
+                }
+            </div>
+        }
+<div class="container">
+    <h3 class="text-center mb-2">Task List</h3>
+    <div class="d-flex justify-content-end">
+        @if (Model.CanAddTask)
+        {
+            <div>
+                <button class="btn btn-primary mb-4" id="showAddPopupBox">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                    </svg>
+                    Add Task
+                </button>
+            </div>
+        }
+    </div>
+    <table id="myTable" class="table mt-4 table-stripped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>SN</th>
+                <th>Task</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>IP-Address</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model.TaskList)
+            {
+                <tr>
+                    <td>@(sn++)</td>
+                    <td>@Html.Raw(task.Task)</td>
+                    <td>@(task.TaskPerformedDate.ShowDate())</td>
+                    <td>@(task.TaskPerformedDate.ShowTime())</td>
+                    <td>@(task.Ipaddress)</td>
+                    <td>
+                        @if (formattedDate == (task.TaskPerformedDate.ToString("MM/dd/yyyy")).ToString())
+                        {
+                            <div class="d-flex" style="gap:10px">
+                                <form asp-controller="UserTask" asp-action="deleteTask" method="post" class="mb-0">
+                                    <input hidden name="taskId" value="@(task.Id)" />
+                                    <button type="submit" class="btn btn-danger">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                                <button class="btn btn-warning" id="@task.Id" onclick="showEditBox(this.id);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            placeholder: 'Enter your task',
+            tabsize: 2,
+            height: 200,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['para', ['ul']],
+                ['view', ['codeview']],
+            ]
+        });
+    });
+    $("#closeAddPopUpBtn").on("click", () => {
+        $("#blurBox").addClass("d-none");
+        $("#addDataFormBox").addClass("d-none");
+    });
+    $("#showAddPopupBox").on("click", () => {
+        $("#blurBox").removeClass("d-none");
+        $("#addDataFormBox").removeClass("d-none");
+    });
+    $("#addTodayTask").on("click", () => {
+        event.preventDefault();
+        var value = $("#summernote").val();
+        if (value === "") {
+            $("#emptyAddTaskInputFiled").text("Task is empty")
+            return false;
+        }
+        else {
+            const form = document.getElementById("addTaskForm");
+            const formAction = "@Url.Action("addTask", "UserTask")";
+            form.action = formAction;
+            form.submit();
+        }
+    })
+    function showEditBox(x) {
+
+        $("#blurBox").removeClass("d-none");
+        $("#editTaskBox_" + x).removeClass("d-none");
+        $('#summernoteedit_' + x).summernote({
+            placeholder: 'Enter your task',
+            tabsize: 2,
+            height: 200,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['para', ['ul']],
+                ['view', ['codeview']],
+            ]
+        });
+    }
+    function hideEditBox(id) {
+        $("#blurBox").addClass("d-none");
+        $("#" + id).addClass("d-none");
+    }
+    $('#myTable').DataTable();
+</script>

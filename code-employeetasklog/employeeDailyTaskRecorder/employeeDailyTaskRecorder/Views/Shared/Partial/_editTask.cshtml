@@ -1,0 +1,14 @@
+﻿@model employeeDailyTaskRecorder.Models.Record
+@{
+    //var _ActiveUser = Context.Session.Get();
+}
+<form asp-controller="UserTask" asp-action="editTask" method="post">
+    <input type="hidden" value="Admin" name="Type" />
+    <input hidden name="Id" value=@(Model.Id) />
+    <label class="form-label">Task</label>
+    <textarea class="form-control" id="summernoteedit_@Model.Id" name="Task" rows="3">@Html.Raw(Model.Task)</textarea>
+    <div class="d-flex justify-content-end">
+
+        <button type="submit" class="btn btn-warning mt-3 w-25">Update</button>
+    </div>
+</form>

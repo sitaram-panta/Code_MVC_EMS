@@ -1,0 +1,324 @@
+﻿@model VMAdminIndex
+@{
+    int sn = 1;
+    string[] colors = { "#352f44", "#512b81", "#cd1818", "#810ca8", "#1e5128", "#d89216", "#200f21" };
+}
+<div class="container">
+    <div class="row mt-4">
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="" />
+                <input hidden type="text" name="subType" value="" />
+                <button type="submit" class="card-body" style="background-color:#FFE2E6;border:1px solid #FA597E">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">Total Employee</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">@Model.TotalEmployee</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#FA597E">
+                                <ion-icon name="people" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="Stage" />
+                <input hidden type="text" name="subType" value="Internship" />
+                <button type="submit" class="card-body" style="background-color:#FFF4DE;border:1px solid #FE947A">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">Intern</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">@Model.TotalIntern</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#FE947A">
+                                <ion-icon name="school" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="Stage" />
+                <input hidden type="text" name="subType" value="ProbationPeriod" />
+                <input hidden type="text" name="iconType" value="time" />
+                <button class="card-body" style="background-color:#DCFCE7;border:1px solid #3CD755">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">Provision Period</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">@Model.TotalProvisionPeriod</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#3CD755">
+                                <ion-icon name="time" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="Stage" />
+                <input hidden type="text" name="subType" value="Contractual" />
+                <input hidden type="text" name="iconType" value="briefcase" />
+                <button class="card-body" style="background-color:#F4E8FF;border:1px solid #BF83FF">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">Contractual</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">@Model.TotalContractual</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#BF83FF">
+                                <ion-icon name="briefcase" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="Role" />
+                <input hidden type="text" name="subType" value="UserType" />
+                <input hidden type="text" name="iconType" value="person" />
+                <button type="submit" class="card-body" style="background-color:#AED9E0;border:1px solid #005792">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">Admin</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">@Model.TotalAdmin</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#005792">
+                                <ion-icon name="person" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="Role" />
+                <input hidden type="text" name="subType" value="Quality Assurance" />
+                <input hidden type="text" name="iconType" value="checkmark-circle" />
+                <button type="submit" class="card-body" style="background-color:#D7CCC8;border:1px solid #6C4F3D">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">Quality Assurance</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">@Model.TotalQA</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#6C4F3D">
+                                <ion-icon name="checkmark-circle" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="Role" />
+                <input hidden type="text" name="subType" value="Developer" />
+                <input hidden type="text" name="iconType" value="construct" />
+                <button type="submit" class="card-body" style="background-color:#B2DFDB;border:1px solid #008080">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">Developer</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">@Model.TotalDeveloper</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#008080">
+                                <ion-icon name="construct" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="" />
+                <input hidden type="text" name="subType" value="" />
+                <input hidden type="text" name="iconType" value="people" />
+                <button type="submit" class="card-body" style="background-color:#FFF4DE;border:1px solid #FE947A">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">Male/Female</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">@Model.TotalMale/@Model.TotalFemale</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#FE947A">
+                                <ion-icon name="man" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+
+    </div>
+   @*  <hr />
+    <h3 class="fs-5 text-secondary">Today's Status</h3>
+    <div class="row">
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="Role" />
+                <input hidden type="text" name="subType" value="Quality Assurance" />
+                <input hidden type="text" name="iconType" value="checkmark-circle" />
+                <button type="submit" class="card-body" style="background-color:#ebf4fa;border:1px solid #3a87ad">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">In Office</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">4</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#3a87ad">
+                                <ion-icon name="location" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="Role" />
+                <input hidden type="text" name="subType" value="Quality Assurance" />
+                <input hidden type="text" name="iconType" value="checkmark-circle" />
+                <button type="submit" class="card-body" style="background-color:#f0ffe0;border:1px solid #228b22">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">In Bank</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">3</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#228b22">
+                                <ion-icon name="business" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="Role" />
+                <input hidden type="text" name="subType" value="Developer" />
+                <input hidden type="text" name="iconType" value="construct" />
+                <button type="submit" class="card-body" style="background-color:#e6e6fa;border:1px solid #4b0082">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">WFH</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">2</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#4b0082">
+                                <ion-icon name="home" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div class="d-flex col-lg-6 col-xl-3">
+            <form asp-controller="User" asp-action="CategorizedUserList" class="flex-fill card-stats mb-4 mb-xl-0 card">
+                <input hidden type="text" name="type" value="" />
+                <input hidden type="text" name="subType" value="" />
+                <input hidden type="text" name="iconType" value="people" />
+                <button type="submit" class="card-body" style="background-color:#ffe6cc;border:1px solid #996633">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-uppercase text-dark mb-0 card-title">
+                                <small style="font-weight: bold">Leave</small>
+                            </h6>
+                            <span class="h2 font-weight-bold mb-0">1</span>
+                        </div>
+                        <div class="col-auto col">
+                            <div class="text-white rounded-circle shadow p-2 d-flex flex-column justify-content-center" style="background-color:#996633">
+                                <ion-icon name="airplane" class="fs-1"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        </div>
+
+    </div> *@
+    <div class="d-flex justify-content-between mb-4 mt-4">
+        <h3 class="fs-5 text-secondary">Completion By @ViewBag.CompletionDays Days</h3>
+        <form asp-action="Dashboard" asp-controller="Admin" method="POST" class="d-flex" style="gap:10px;">
+            <input class="form-control mr-sm-2" name="days" type="search" placeholder="Sort by days" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Filter</button>
+        </form>
+
+    </div>
+    <table class="table w-100" id="myTable">
+        <thead class="table-dark">
+            <tr>
+                <th>SN</th>
+                <td>Employee Name</td>
+                <td>Employee Type</td>
+                <td>Employee Role</td>
+                <td>Join Date</td>
+                <td>Completion Date</td>
+                <td>Remaining Days</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.EmployeeList)
+            {
+                <tr>
+                    <td>@(sn++)</td>
+                    <td>@(item.Name)</td>
+                    <td>@(item.EmpType)</td>
+                    <td>@(item.EmpRole)</td>
+                    <td>@(item.JoinDate.ShowDate())</td>
+                    <td>@(item.CurrentStageCompletionDate.ShowDate())</td>
+                    <td>@((item.CurrentStageCompletionDate - DateTime.Now).Days)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script>
+        $('#myTable').DataTable();
+        function closeUserDetailPopupBox() {
+            $("#blurBox").addClass("d-none");
+            $("#UserDetailPopupBox").addClass("d-none");
+        }
+    </script>
+}
